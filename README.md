@@ -18,7 +18,7 @@ Because each agent client interacts with the LLM differently, this repository in
 - **Tool Call Normalization:** Aggressively formats messy outputs (e.g., XML tags or Python-style syntax) into strict OpenAI-compatible `tool_calls`.
 
 **2. `aider_proxy.py` (For Aider)**
-- **Strict Markdown Parser Fix:** Local LLMs often prepend language tags to code blocks (e.g., ````python`). Aider's "Whole" parser crashes on this. The proxy actively strips these tags on the fly.
+- **Strict Markdown Parser Fix:** Local LLMs often prepend language tags to code blocks (e.g., ```python). Aider's "Whole" parser crashes on this. The proxy actively strips these tags on the fly.
 - **"95% Freeze" Prevention:** Aider sometimes drops the connection if `finish_reason: stop` is sent in the same chunk as the final backticks. This proxy intentionally delays and separates the `finish_reason` into an empty chunk to ensure 100% successful code application.
 
 ### The Core Problems Solved
@@ -53,7 +53,7 @@ The full architectural breakdown, development story, and detailed mechanisms of 
 - **ツールコール矯正:** LLMが誤って出力したXMLタグや構文エラーを、正規の `tool_calls` フォーマットに力技で補正します。
 
 **2. `aider_proxy.py` (Aider 用)**
-- **マークダウンタグの除去:** ローカルLLMはコードブロックに ````python` のように言語名を付けがちですが、AiderのWholeパーサーはこれを許容しません。プロキシ側でこの言語名を正規表現で削ぎ落とします。
+- **マークダウンタグの除去:** ローカルLLMはコードブロックに ```python のように言語名を付けがちですが、AiderのWholeパーサーはこれを許容しません。プロキシ側でこの言語名を正規表現で削ぎ落とします。
 - **「95%フリーズ問題」の回避:** Aiderは最後のテキストチャンクと同時に `finish_reason: stop` を受信すると、末尾数文字のバッファを切り捨ててパースに失敗することがあります。これを防ぐため、テキストを送り切った後に完全に独立した空チャンクで `finish_reason` のみを送信します。
 
 ### 共通で解決する課題
