@@ -26,7 +26,7 @@ When running agents against local LLMs on resource-constrained hardware (like AP
 1. **Prefill Collapse:** Even a 1-character change in the prompt invalidates the KV cache, forcing a massive, slow full recompute (Prefill).
 2. **Read Timeouts:** During long prefill calculations, the HTTP connection goes completely silent. Clients interpret this as a crashed server and drop the connection.
 
-Both proxies utilize **Heartbeat Streaming** (sending empty SSE chunks every 60 seconds) to trick clients into waiting indefinitely, and integrate with [Headroom](https://github.com/chopratejas/headroom) for intelligent context compression to prevent Out-of-Memory (OOM) errors.
+Both proxies utilize **Heartbeat Streaming** (sending empty SSE chunks every 60 seconds) to trick clients into waiting indefinitely. Additionally, `kilo_proxy.py` integrates with [Headroom](https://github.com/chopratejas/headroom) for intelligent context compression to prevent Out-of-Memory (OOM) errors (Aider handles its own context summarization natively).
 
 ### Usage
 *This is an experimental tool heavily optimized for specific workflows. Adjust the rules and endpoints according to your local LLM setup.*
@@ -61,7 +61,7 @@ The full architectural breakdown, development story, and detailed mechanisms of 
 1. **Prefill崩壊:** プロンプトが1文字でも変化するとKVキャッシュが破棄され、数十分もの長いPrefill（再計算）が発生してしまいます。
 2. **タイムアウト切断:** 長いPrefill計算中の沈黙を、クライアント側が「サーバーハング」と誤検知して接続を切断してしまいます。
 
-両プロキシとも、計算中に60秒間隔で空のチャンクを送信する **Heartbeat ストリーミング** を実装してタイムアウトを防ぎ、OSSの [Headroom](https://github.com/chopratejas/headroom) と連携してエラーログなどをインテリジェントに圧縮し、VRAM溢れ（OOM）を未然に防ぎます。
+両プロキシとも、計算中に60秒間隔で空のチャンクを送信する **Heartbeat ストリーミング** を実装してタイムアウトを防ぎます。さらに `kilo_proxy.py` では、OSSの [Headroom](https://github.com/chopratejas/headroom) と連携してエラーログなどをインテリジェントに圧縮し、VRAM溢れ（OOM）を未然に防いでいます（Aider環境ではAider自身の自動要約機能にコンテキスト管理を委ねています）。
 
 ### 使い方
 *※特定の環境に特化して最適化された実験的なツールです。ご自身のローカルLLM環境に合わせて調整してご使用ください。*
