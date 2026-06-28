@@ -1,0 +1,18 @@
+[Unit]
+Description=LLM Proxy for Local LLM (%i mode)
+After=network.target llama-server.service
+Requires=llama-server.service
+
+[Service]
+Type=simple
+User=irom
+Group=irom
+WorkingDirectory=/home/irom/dev/llm_proxy
+Environment="KILO_PROXY_LOG_DIR=/var/log/kilo_proxy"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/home/irom/dev/ollama/.venv/bin/python /home/irom/dev/llm_proxy/__main__.py --mode %i
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
