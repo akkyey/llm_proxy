@@ -35,7 +35,7 @@ Both proxies utilize **Heartbeat Streaming** (sending empty SSE chunks every 60 
 3. The proxy will forward sanitized requests to your underlying `llama-server`.
 
 ### Related Article
-The full architectural breakdown, development story, and detailed mechanisms of these proxies are documented in our tech blog article: [Link coming soon...]
+The full architectural breakdown, development story, and detailed mechanisms of these proxies are documented in our tech blog article (Japanese): [Zenn Article](https://zenn.dev/akkyey/articles/abf10f9eb05f6a)
 
 ---
 
@@ -70,4 +70,4 @@ The full architectural breakdown, development story, and detailed mechanisms of 
 3. プロキシがリクエストを無菌化し、バックエンドの `llama-server` へ転送します。
 
 ### 関連記事
-これらのプロキシのアーキテクチャや開発の裏話については、技術ブログにて詳細に解説しています： [近日公開予定...]
+これらのプロキシのアーキテクチャや開発の裏話については、技術ブログにて詳細に解説しています： [Zenn 記事](https://zenn.dev/akkyey/articles/abf10f9eb05f6a)
