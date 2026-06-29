@@ -13,6 +13,7 @@ import importlib
 import sys
 
 
+__version__ = "0.1.0"
 # 各モードに対応するモジュール名とデフォルトポートの定義
 MODES = {
     "kilo": {
@@ -34,9 +35,14 @@ def main():
     )
     parser.add_argument(
         "--mode",
-        required=True,
         choices=MODES.keys(),
         help="起動するプロキシのモード (kilo / aider)",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="バージョンを表示して終了",
     )
     parser.add_argument(
         "--port",
@@ -50,6 +56,9 @@ def main():
         help="バインドするホストアドレス（デフォルト: 127.0.0.1）",
     )
     args = parser.parse_args()
+
+    if not args.mode:
+        parser.error("引数 --mode は必須です。")
 
     mode_config = MODES[args.mode]
     port = args.port or mode_config["port"]
@@ -67,7 +76,7 @@ def main():
         print(f"エラー: モジュール '{mode_config['module']}' に Flask app が見つかりません", file=sys.stderr)
         sys.exit(1)
 
-    print(f"Starting {mode_config['description']} on {args.host}:{port}...")
+    print(f"Starting {mode_config['description']} v{__version__} on {args.host}:{port}...")
     flask_app.run(port=port, host=args.host)
 
 
