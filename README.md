@@ -28,11 +28,21 @@ When running agents against local LLMs on resource-constrained hardware (like AP
 
 Both proxies utilize **Heartbeat Streaming** (sending empty SSE chunks every 60 seconds) to trick clients into waiting indefinitely. Additionally, `kilo_proxy.py` integrates with [Headroom](https://github.com/chopratejas/headroom) for intelligent context compression to prevent Out-of-Memory (OOM) errors (Aider handles its own context summarization natively).
 
-### Usage
+### Usage (Systemd Service)
 *This is an experimental tool heavily optimized for specific workflows. Adjust the rules and endpoints according to your local LLM setup.*
-1. Run the proxy script suitable for your agent.
-2. Point your agent's API base URL to the proxy (e.g., `http://localhost:5000/v1`).
-3. The proxy will forward sanitized requests to your underlying `llama-server`.
+
+We use a systemd template unit to manage the proxies.
+1. Copy the systemd service file and enable the proxies:
+   ```bash
+   sudo cp llm-proxy@.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now llm-proxy@kilo
+   sudo systemctl enable --now llm-proxy@aider
+   ```
+2. Point your agent's API base URL to the respective proxy port:
+   - Kilo Code (Cline): `http://localhost:9091/v1`
+   - Aider: `http://localhost:9092/v1`
+3. The proxy will forward sanitized requests to your underlying `llama-server` on port 9090.
 
 ### Related Article
 The full architectural breakdown, development story, and detailed mechanisms of these proxies are documented in our tech blog article (Japanese): [Zenn Article](https://zenn.dev/akkyey/articles/abf10f9eb05f6a)
@@ -63,11 +73,21 @@ The full architectural breakdown, development story, and detailed mechanisms of 
 
 両プロキシとも、計算中に60秒間隔で空のチャンクを送信する **ハートビート ストリーミング** を実装してタイムアウトを防ぎます。さらに `kilo_proxy.py` では、OSSの [Headroom](https://github.com/chopratejas/headroom) と連携してエラーログなどをインテリジェントに圧縮し、VRAM溢れ（OOM）を未然に防いでいます（Aider環境ではAider自身の自動要約機能にコンテキスト管理を委ねています）。
 
-### 使い方
+### 使い方 (Systemd サービス)
 *※特定の環境に特化して最適化された実験的なツールです。ご自身のローカルLLM環境に合わせて調整してご使用ください。*
-1. 使用するエージェントに合わせたプロキシスクリプトを起動します。
-2. エージェントの API Base URL をプロキシ（例: `http://localhost:5000/v1`）に向けます。
-3. プロキシがリクエストを無菌化し、バックエンドの `llama-server` へ転送します。
+
+systemd テンプレートユニットを使用してプロキシを管理します。
+1. サービスファイルを配置し、プロキシを起動します：
+   ```bash
+   sudo cp llm-proxy@.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now llm-proxy@kilo
+   sudo systemctl enable --now llm-proxy@aider
+   ```
+2. エージェントの API Base URL をそれぞれのプロキシポートに向けます：
+   - Kilo Code (Cline) 用: `http://localhost:9091/v1`
+   - Aider 用: `http://localhost:9092/v1`
+3. プロキシがリクエストを無菌化し、バックエンドの `llama-server` (ポート9090) へ転送します。
 
 ### 関連記事
 これらのプロキシのアーキテクチャや開発の裏話については、技術ブログにて詳細に解説しています： [Zenn 記事](https://zenn.dev/akkyey/articles/abf10f9eb05f6a)
