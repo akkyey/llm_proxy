@@ -44,6 +44,14 @@ We use a systemd template unit to manage the proxies.
    - Aider: `http://localhost:9092/v1`
 3. The proxy will forward sanitized requests to your underlying `llama-server` on port 9090.
 
+### Viewing Logs
+The proxy application logs are managed by systemd's journal. You can view them in real-time using:
+```bash
+journalctl -u llm-proxy@kilo -f
+journalctl -u llm-proxy@aider -f
+```
+For `kilo_proxy`, the raw request payloads are also dumped as JSON files to `/var/log/kilo_proxy` (as defined in the systemd service) for debugging cache invalidation issues.
+
 ### Related Article
 The full architectural breakdown, development story, and detailed mechanisms of these proxies are documented in our tech blog article (Japanese): [Zenn Article](https://zenn.dev/akkyey/articles/abf10f9eb05f6a)
 
@@ -88,6 +96,14 @@ systemd テンプレートユニットを使用してプロキシを管理しま
    - Kilo Code (Cline) 用: `http://localhost:9091/v1`
    - Aider 用: `http://localhost:9092/v1`
 3. プロキシがリクエストを無菌化し、バックエンドの `llama-server` (ポート9090) へ転送します。
+
+### ログの確認方法
+プロキシの動作ログ（エラーやリクエストのサマリなど）は systemd の journal に出力されます。リアルタイムで監視するには以下のコマンドを使用します：
+```bash
+journalctl -u llm-proxy@kilo -f
+journalctl -u llm-proxy@aider -f
+```
+なお、`kilo_proxy` は KVキャッシュ破壊の調査用として、Kilo Codeからの巨大な生ペイロードを `/var/log/kilo_proxy` 配下にJSONファイルとしてダンプします。
 
 ### 関連記事
 これらのプロキシのアーキテクチャや開発の裏話については、技術ブログにて詳細に解説しています： [Zenn 記事](https://zenn.dev/akkyey/articles/abf10f9eb05f6a)
