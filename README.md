@@ -32,7 +32,8 @@ Both proxies utilize **Heartbeat Streaming** (sending empty SSE chunks every 60 
 *This is an experimental tool heavily optimized for specific workflows. Adjust the rules and endpoints according to your local LLM setup.*
 
 We use a systemd template unit to manage the proxies.
-1. Copy the systemd service file and enable the proxies:
+1. Open `llm-proxy@.service` and edit the placeholders (`YOUR_USERNAME`, `/path/to/...`) to match your environment.
+2. Copy the systemd service file and enable the proxies:
    ```bash
    sudo cp llm-proxy@.service /etc/systemd/system/
    sudo systemctl daemon-reload
@@ -85,7 +86,8 @@ The full architectural breakdown, development story, and detailed mechanisms of 
 *※特定の環境に特化して最適化された実験的なツールです。ご自身のローカルLLM環境に合わせて調整してご使用ください。*
 
 systemd テンプレートユニットを使用してプロキシを管理します。
-1. サービスファイルを配置し、プロキシを起動します：
+1. `llm-proxy@.service` をテキストエディタで開き、プレースホルダー (`YOUR_USERNAME`, `/path/to/...`) をご自身の環境に合わせて書き換えます。
+2. サービスファイルを配置し、プロキシを起動します：
    ```bash
    sudo cp llm-proxy@.service /etc/systemd/system/
    sudo systemctl daemon-reload
