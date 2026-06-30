@@ -28,6 +28,15 @@ When running agents against local LLMs on resource-constrained hardware (like AP
 
 Both proxies utilize **Heartbeat Streaming** (sending empty SSE chunks every 60 seconds) to trick clients into waiting indefinitely. Additionally, `kilo_proxy.py` integrates with [Headroom](https://github.com/chopratejas/headroom) for intelligent context compression to prevent Out-of-Memory (OOM) errors (Aider handles its own context summarization natively).
 
+### Installation
+
+First, clone the repository and install the required Python dependencies (including `headroom-ai` for context compression):
+```bash
+git clone https://github.com/akkyey/llm_proxy.git
+cd llm_proxy
+pip install -r requirements.txt
+```
+
 ### Usage (Systemd Service)
 *This is an experimental tool heavily optimized for specific workflows. Adjust the rules and endpoints according to your local LLM setup.*
 
@@ -81,6 +90,15 @@ The full architectural breakdown, development story, and detailed mechanisms of 
 2. **タイムアウト切断:** 長いプレフィル計算中の沈黙を、クライアント側が「サーバーハング」と誤検知して接続を切断してしまいます。
 
 両プロキシとも、計算中に60秒間隔で空のチャンクを送信する **ハートビート ストリーミング** を実装してタイムアウトを防ぎます。さらに `kilo_proxy.py` では、OSSの [Headroom](https://github.com/chopratejas/headroom) と連携してエラーログなどをインテリジェントに圧縮し、VRAM溢れ（OOM）を未然に防いでいます（Aider環境ではAider自身の自動要約機能にコンテキスト管理を委ねています）。
+
+### インストール
+
+まずリポジトリをクローンし、必要な依存パッケージ（コンテキスト圧縮のための `headroom-ai` 等）をインストールします：
+```bash
+git clone https://github.com/akkyey/llm_proxy.git
+cd llm_proxy
+pip install -r requirements.txt
+```
 
 ### 使い方 (Systemd サービス)
 *※特定の環境に特化して最適化された実験的なツールです。ご自身のローカルLLM環境に合わせて調整してご使用ください。*
